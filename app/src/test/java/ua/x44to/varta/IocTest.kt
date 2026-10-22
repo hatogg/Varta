@@ -39,6 +39,11 @@ class IocTest {
         assertEquals(IocHit.By.APK_HASH, h!!.by)
     }
 
+    @Test fun publicTestKeysAreNotIndicators() {
+        // AOSP testkey: ним підписані службові пакети емуляторів і програми кастомних прошивок
+        assertNull(ioc.match("com.android.cts.ctsshim", listOf("61ED377E85D386A8DFEE6B864BD85B0BFAA5AF81"), emptyList(), null))
+    }
+
     @Test fun watchware() {
         val h = ioc.match("com.life360.android.safetymapd", emptyList(), emptyList(), null)
         assertTrue(h!!.watchware)

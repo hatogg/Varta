@@ -126,7 +126,8 @@ class AppScanner(private val ctx: Context) {
             sha = hashes[key] ?: Certs.sha256(apk)
             if (sha != null) keep[key] = sha
         }
-        val ioc = ioc.match(pkg, certSha1, subjects, sha)
+        // вбудовані програми звіряємо лише за назвою пакета: їх підписує виробник, і збіг сертифіката тут — хибна тривога
+        val ioc = if (system) ioc.match(pkg, emptyList(), emptyList(), null) else ioc.match(pkg, certSha1, subjects, sha)
 
         val (installer, initiator) = installSource(pkg)
         val source = Risk.source(installer, initiator, system)

@@ -33,6 +33,15 @@ def add_app(name, kind):
 
 
 HEX40 = re.compile(r"^[0-9A-F]{40}$")
+# Публічні тестові ключі AOSP (build/target/product/security): ними підписано системні програми кастомних прошивок,
+# службові пакети емуляторів і безліч аматорських програм. Деякі стежилки теж ними підписані, але за таким
+# сертифікатом не можна нікого впізнати — лише хибні тривоги.
+PUBLIC_KEYS = {
+    "61ED377E85D386A8DFEE6B864BD85B0BFAA5AF81",  # testkey
+    "27196E386B875E76ADF700E7EA84E4C6EEE33DFA",  # platform
+    "5B368CFF2DA2686996BC95EAC190EAA4F5630FE5",  # shared
+    "B79DF4A82E90B57EA76525AB7037AB238A42F5D3",  # media
+}
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
 for f in ("ioc.yaml", "watchware.yaml"):
@@ -42,7 +51,7 @@ for f in ("ioc.yaml", "watchware.yaml"):
             pkg.setdefault(p.strip(), i)
         for c in a.get("certificates") or []:
             c = c.strip().upper().replace(":", "")
-            if HEX40.match(c):
+            if HEX40.match(c) and c not in PUBLIC_KEYS:
                 cert.setdefault(c, i)
         for o in a.get("certificate_organizations") or []:
             org.setdefault(o.strip(), i)
@@ -62,7 +71,7 @@ with open(src / "samples.csv", encoding="utf-8") as fh:
         if HEX64.match(h):
             sha.setdefault(h, i)
         c = (row.get("Certificate") or "").strip().upper().replace(":", "")
-        if HEX40.match(c):
+        if HEX40.match(c) and c not in PUBLIC_KEYS:
             cert.setdefault(c, i)
         p = (row.get("Package Name") or "").strip()
         if p:
