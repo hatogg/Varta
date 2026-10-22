@@ -58,6 +58,8 @@ class JunkScanner(
         val name = f.name.lowercase()
         val age = now - f.lastModified()
         val kind = when {
+            // службові файли MediaStore (.nomedia, .database_uuid) лишаємо, інакше галерея переіндексує все
+            inThumbs && name.startsWith(".") -> null
             inThumbs -> Junk.THUMBS
             name.endsWith(".apk") || name.endsWith(".apks") || name.endsWith(".xapk") -> Junk.APKS
             name.endsWith(".tmp") || name.endsWith(".temp") || name.endsWith(".log") -> Junk.TEMP

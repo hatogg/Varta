@@ -23,6 +23,8 @@ class JunkScannerTest {
         f("Download/fresh.part", 50)
         f("DCIM/Camera/IMG_1.jpg", 100)
         f("DCIM/.thumbnails/1.jpg", 20)
+        f("DCIM/.thumbnails/.nomedia", 0)
+        f("DCIM/.thumbnails/.database_uuid", 36)
         f("Telegram/log.txt.log", 30)
         f("app/cache/x.tmp", 40)
         f("Movies/big.mp4", 2000)
