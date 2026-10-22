@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +35,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
+import androidx.core.view.WindowCompat
 import ua.x44to.varta.data.Store
 import ua.x44to.varta.data.t
 import ua.x44to.varta.scan.Scan
@@ -47,6 +50,7 @@ import ua.x44to.varta.ui.ProtectScreen
 import ua.x44to.varta.ui.Sel
 import ua.x44to.varta.ui.SettingsScreen
 import ua.x44to.varta.ui.VartaTheme
+import ua.x44to.varta.ui.isDark
 
 class MainActivity : ComponentActivity() {
     private val perms = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { FileAccess.tick++ }
@@ -61,6 +65,15 @@ class MainActivity : ComponentActivity() {
         FileAccess.launcher = perms
         openPkg = intent?.getStringExtra(EXTRA_PKG)
         setContent {
+            // значки рядка стану мають бути видні й тоді, коли тема в «Варті» інша, ніж у системі
+            val dark = isDark(Store.theme)
+            val view = LocalView.current
+            SideEffect {
+                WindowCompat.getInsetsController(window, view).apply {
+                    isAppearanceLightStatusBars = !dark
+                    isAppearanceLightNavigationBars = !dark
+                }
+            }
             VartaTheme(Store.theme) {
                 // мова змінюється без перезапуску: перебудувати все
                 key(Store.lang) { App(openPkg) { openPkg = null } }
