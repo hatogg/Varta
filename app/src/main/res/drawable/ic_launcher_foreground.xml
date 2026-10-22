@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Щит вартового з жовтою галочкою -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- тінь -->
+    <path
+        android:fillColor="#33000000"
+        android:pathData="M56,32L76,39.5V54.5C76,67 67.6,77.6 56,81C44.4,77.6 36,67 36,54.5V39.5Z" />
+    <!-- щит -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M54,30L74,37.5V52.5C74,65 65.6,75.6 54,79C42.4,75.6 34,65 34,52.5V37.5Z" />
+    <!-- ліва половина трохи темніша — щит «об'ємний» -->
+    <path
+        android:fillColor="#FFDDE1FF"
+        android:pathData="M54,30V79C42.4,75.6 34,65 34,52.5V37.5Z" />
+    <!-- галочка -->
+    <path
+        android:pathData="M44.5,54.5L51,61L64,47.5"
+        android:strokeWidth="5.5"
+        android:strokeColor="#FFFFC857"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>
